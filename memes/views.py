@@ -13,10 +13,17 @@ from .models import Mem, ImageSrc
 def upload(request):
     if request.method == 'POST':
         f = request.FILES['file']
-        destination_path = settings.STATICFILES_DIRS[0] + settings.IMAGES_DIR + 'dddd.jpg'
+        obj = ImageSrc.objects.latest('id')
+        filename = str(obj.id + 1) + '.jpeg'
+        arr = os.listdir(settings.STATICFILES_DIRS[0] + settings.IMAGES_DIR)
+        if filename in arr:
+            print('exists ' + filename)
+            filename = '_' + filename
+
+        destination_path = settings.STATICFILES_DIRS[0] + settings.IMAGES_DIR + filename
         ImageSrc.handle_uploaded_file(f, destination_path=destination_path)
-        ImageSrc.objects.get_or_create(path=settings.IMAGES_DIR + '')
-        image = ImageSrc.objects.filter(path=settings.IMAGES_DIR + '')
+        ImageSrc.objects.get_or_create(path=settings.IMAGES_DIR + filename)
+        image = ImageSrc.objects.filter(path=settings.IMAGES_DIR + filename)[0]
         return HttpResponseRedirect(reverse('memes:image', args=(image.id,)))
 
 
@@ -60,7 +67,7 @@ def set_text(request, image_id):
         mem = Mem.objects.get_or_create(image=selected_image,
                                         upper_text=upper_text,
                                         lower_text=lower_text)[0]
-        mem.path = settings.MEMES_DIR + str(mem.id) + '.jpg'
+        mem.path = settings.MEMES_DIR + str(mem.id) + '.jpeg'
         mem.save()
         Mem.generate_meme(image_path=settings.STATICFILES_DIRS[0] + selected_image.path,
                           font_path=settings.STATICFILES_DIRS[0] + '/fonts/impact/impact.ttf',
@@ -77,7 +84,7 @@ def set_text(request, image_id):
 
 
 def download(request, mem_id):
-    file_path = settings.STATICFILES_DIRS[0] + settings.MEMES_DIR + str(mem_id) + '.jpg'
+    file_path = settings.STATICFILES_DIRS[0] + settings.MEMES_DIR + str(mem_id) + '.jpeg'
     print('download ' + file_path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
