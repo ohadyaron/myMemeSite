@@ -1,0 +1,14 @@
+<h1>{{ image.path }}</h1>
+{% load static %}
+ <img src="{% static image.path %}" width="200px"/>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'memes:set_text' image.id %}" method="post">
+    {% csrf_token %}
+    <label for="utext">Upper Text:</label>
+    <input id="utext" name="utext" type="text"><br><br>
+    <label for="ltext">Last name:</label>
+    <input id="ltext" name="ltext" type="text"><br><br>
+    <input type="submit" value="Create">
+</form>

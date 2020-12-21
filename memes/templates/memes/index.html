@@ -1,0 +1,15 @@
+{% load static %}
+{% block content %}
+<h1>Choose your image</h1>
+  <form action="{% url 'memes:upload' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file">
+    <button type="submit">Upload</button>
+  </form>
+{% for image in latest_images_list %}
+<a href="{% url 'memes:image' image.id %}">
+    <!--<a href="{{ file.id }}/image/">-->
+    <img src="{% static image.path %}" width="200px"/>
+</a>
+{% endfor %}
+{% endblock %}
