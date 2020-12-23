@@ -1,14 +1,54 @@
-<h1>{{ image.path }}</h1>
-{% load static %}
- <img src="{% static image.path %}" width="200px"/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MemeGenerator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'memes/style.css' %}">
+</head>
+<body>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<div class="header">
+    <h1>Meme Generator</h1>
+    <p>create your own memes</p>
+</div>
 
-<form action="{% url 'memes:set_text' image.id %}" method="post">
-    {% csrf_token %}
-    <label for="utext">Upper Text:</label>
-    <input id="utext" name="utext" type="text"><br><br>
-    <label for="ltext">Last name:</label>
-    <input id="ltext" name="ltext" type="text"><br><br>
-    <input type="submit" value="Create">
-</form>
+<div class="topnav">
+    <a href="{% url 'memes:index' %}">Memes</a>
+    <a href="{% url 'memes:image_sources' %}">New Meme</a>
+    <a href="{% url 'memes:upload' %}">Upload Image Source</a>
+    <a href="{% url 'admin:index' %}">Admin</a>
+</div>
+
+<div class="row">
+    <div class="column middle">
+        <h2>Chosen Image Source</h2>
+        {% load static %}
+
+        <div class="gallery">
+            <img src="{% static image.path %}" width="600" height="400"/>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <div class="desc">{{ image.path }}</div>
+        </div>
+    </div>
+
+    <div class="column side">
+        <h2>Chosen the text for the Meme</h2>
+        <form action="{% url 'memes:set_text' image.id %}" method="post">
+            {% csrf_token %}
+            <label for="utext">Upper Text:</label>
+            <input id="utext" name="utext" type="text"  maxlength="50"><br><br>
+            <label for="ltext">Last name:</label>
+            <input id="ltext" name="ltext" type="text"  maxlength="50"><br><br>
+            <input type="submit" value="Create">
+        </form>
+    </div>
+</div>
+
+<div class="footer">
+    <p>meme generator</p>
+</div>
+
+</body>
+</html>

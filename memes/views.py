@@ -2,6 +2,7 @@ import mimetypes
 import os
 
 from django.conf import settings
+from django import forms
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -25,6 +26,9 @@ def upload(request):
         ImageSrc.objects.get_or_create(path=settings.IMAGES_DIR + filename)
         image = ImageSrc.objects.filter(path=settings.IMAGES_DIR + filename)[0]
         return HttpResponseRedirect(reverse('memes:image', args=(image.id,)))
+    else:
+        form = UploadFileForm()
+    return render(request, 'memes/upload.html', {'form': form})
 
 
 def load_images():
@@ -36,11 +40,25 @@ def load_images():
             print("already exists " + file)
 
 
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()
+
+
 class IndexView(generic.ListView):
     template_name = 'memes/index.html'
-    context_object_name = 'latest_images_list'
+    context_object_name = 'latest_memes_list'
 
     load_images()
+
+    def get_queryset(self):
+        """Return 20 static images."""
+        return Mem.objects.all()
+
+
+class ImagesSourcesView(generic.ListView):
+    template_name = 'memes/image_sources.html'
+    context_object_name = 'latest_images_list'
 
     def get_queryset(self):
         """Return 20 static images."""
@@ -55,7 +73,7 @@ class ImageSrcView(generic.DetailView):
 
 class MemView(generic.DetailView):
     model = Mem
-    template_name = 'memes/mem.html'
+    template_name = 'memes/meme.html'
 
 
 def set_text(request, image_id):

@@ -23,15 +23,15 @@
 
 <div class="row">
     <div class="column middle">
-        <h2>Memes</h2>
+        <h2>Choose the image for your meme</h2>
         {% load static %}
         {% block content %}
-        {% for meme in latest_memes_list %}
+        {% for image in latest_images_list %}
         <div class="gallery">
-            <a target="_blank" href="{% url 'memes:meme' meme.id %}">
-                <img src="{% static meme.path %}"  width="600" height="400">
+            <a target="_blank" href="{% url 'memes:image' image.id %}">
+                <img src="{% static image.path %}"  width="600" height="400">
             </a>
-            <div class="desc">{% static mem.path %}</div>
+            <div class="desc">{% static image.path %}</div>
         </div>
         {% endfor %}
         {% endblock %}

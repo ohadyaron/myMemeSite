@@ -7,6 +7,20 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'memes/style.css' %}">
 </head>
+<script>
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#myimage').attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+</script>
 <body>
 
 <div class="header">
@@ -23,17 +37,14 @@
 
 <div class="row">
     <div class="column middle">
-        <h2>Memes</h2>
+        <h2>Choose the image for your meme</h2>
         {% load static %}
         {% block content %}
-        {% for meme in latest_memes_list %}
-        <div class="gallery">
-            <a target="_blank" href="{% url 'memes:meme' meme.id %}">
-                <img src="{% static meme.path %}"  width="600" height="400">
-            </a>
-            <div class="desc">{% static mem.path %}</div>
-        </div>
-        {% endfor %}
+        <form action="{% url 'memes:upload' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" onchange="readURL(this);" name="file">
+            <button type="submit">Upload</button>
+        </form>
         {% endblock %}
     </div>
 </div>

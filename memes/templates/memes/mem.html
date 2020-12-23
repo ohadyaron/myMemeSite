@@ -1,6 +1,0 @@
-<h1>{{ mem.path }}</h1>
-{% load static %}
-<img src="{% static mem.path %}" width="200px"/>
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<input onclick="window.open('download')" type="button" value="Download">

@@ -23,18 +23,12 @@
 
 <div class="row">
     <div class="column middle">
-        <h2>Memes</h2>
+        <h2>{{ mem.path }}</h2>
         {% load static %}
-        {% block content %}
-        {% for meme in latest_memes_list %}
-        <div class="gallery">
-            <a target="_blank" href="{% url 'memes:meme' meme.id %}">
-                <img src="{% static meme.path %}"  width="600" height="400">
-            </a>
-            <div class="desc">{% static mem.path %}</div>
-        </div>
-        {% endfor %}
-        {% endblock %}
+        <img src="{% static mem.path %}" width="200px"/>
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <input onclick="window.open('download')" type="button" value="Download">
     </div>
 </div>
 
