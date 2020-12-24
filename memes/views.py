@@ -91,7 +91,7 @@ def set_text(request, image_id):
         mem.path = settings.MEMES_DIR + str(mem.id) + '.jpeg'
         mem.save()
         Mem.generate_meme(image_path=settings.STATICFILES_DIRS[0] + selected_image.path,
-                          font_path=settings.STATICFILES_DIRS[0] + '/fonts/impact/impact.ttf',
+                          font_path=settings.STATICFILES_DIRS[0] + '/fonts/impact/varela.ttf',
                           dst_path=settings.STATICFILES_DIRS[0] + mem.path,
                           top_text=upper_text,
                           bottom_text=lower_text)

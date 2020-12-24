@@ -35,7 +35,7 @@
 
     <div class="column side">
         <h2>Chosen the text for the Meme</h2>
-        <form action="{% url 'memes:set_text' image.id %}" method="post">
+        <form action="{% url 'memes:set_text' image.id %}" method="post" content='text/html; charset=UTF-8'>
             {% csrf_token %}
             <label for="utext">Upper Text:</label>
             <input id="utext" name="utext" type="text"  maxlength="50"><br><br>
