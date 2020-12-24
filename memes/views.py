@@ -49,7 +49,7 @@ class IndexView(generic.ListView):
     template_name = 'memes/index.html'
     context_object_name = 'latest_memes_list'
 
-    load_images()
+    # load_images()
 
     def get_queryset(self):
         """Return 20 static images."""
