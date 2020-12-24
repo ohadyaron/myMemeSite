@@ -14,8 +14,11 @@ from .models import Mem, ImageSrc
 def upload(request):
     if request.method == 'POST':
         f = request.FILES['file']
-        obj = ImageSrc.objects.latest('id')
-        filename = str(obj.id + 1) + '.jpeg'
+        if ImageSrc.objects.count() == 0:
+            filename = '1.jpeg'
+        else:
+            obj = ImageSrc.objects.latest('id')
+            filename = str(obj.id + 1) + '.jpeg'
         arr = os.listdir(settings.STATICFILES_DIRS[0] + settings.IMAGES_DIR)
         if filename in arr:
             print('exists ' + filename)
